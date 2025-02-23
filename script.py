@@ -4,6 +4,15 @@ import os
 import matplotlib.pyplot as plt
 from flask import Flask, request, jsonify, render_template
 
+# Ensure .gitignore file exists to prevent PCAP files from being uploaded to GitHub
+gitignore_content = """# Ignore PCAP files
+*.pcap
+*.pcapng
+"""
+with open(".gitignore", "a") as gitignore_file:
+    if "*.pcap" not in gitignore_file.read():
+        gitignore_file.write(gitignore_content)
+
 app = Flask(__name__)
 
 def analyze_pcap(file_path):
