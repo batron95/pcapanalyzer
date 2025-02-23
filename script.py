@@ -6,13 +6,6 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "PCAP Analyzer is running on Render!"
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 def analyze_pcap(file_path):
     """Analyzes a PCAP file using TShark CLI instead of Pyshark to avoid asyncio issues."""
     
