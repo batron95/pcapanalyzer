@@ -1,6 +1,5 @@
 Flask
 matplotlib
 gunicorn
-subprocess
 json
 os
