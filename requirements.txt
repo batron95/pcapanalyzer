@@ -1,5 +1,4 @@
 Flask
 matplotlib
 gunicorn
-json
 os
