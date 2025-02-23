@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCAP Analyzer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center">PCAP Analyzer</h1>
+        <p class="text-center text-muted">Upload a PCAP file to analyze network traffic.</p>
+
+        <div class="card p-4 shadow">
+            <form action="/upload" method="post" enctype="multipart/form-data" class="text-center">
+                <input type="file" name="file" accept=".pcap" required class="form-control mb-3">
+                <button type="submit" class="btn btn-primary">Upload & Analyze</button>
+            </form>
+        </div>
+
+        {% if analysis_results %}
+        <div class="mt-5">
+            <h3 class="text-center">Analysis Results</h3>
+
+            <!-- Chart Toggle Selection -->
+            <form action="/toggle_chart" method="post" id="chartForm">
+                <div class="text-center">
+                    <label for="chartToggle" class="form-check-label">Show Bar Chart</label>
+                    <input type="checkbox" class="form-check-input" id="chartToggle" name="chart_type"
+                           value="bar" {% if selected_chart == 'bar' %}checked{% endif %}
+                           onchange="document.getElementById('chartForm').submit();">
+                </div>
+            </form>
+
+            <!-- Display Selected Chart -->
+            <div class="text-center mt-4">
+                <h5>Protocol Distribution</h5>
+                <img src="{% if selected_chart == 'bar' %}{{ protocol_plot_bar }}{% else %}{{ protocol_plot_pie }}{% endif %}" 
+                     class="img-fluid rounded shadow">
+            </div>
+
+            <!-- IP Traffic Chart -->
+            <div class="text-center mt-4">
+                <h5>IP Traffic</h5>
+                <img src="{{ ip_plot }}" class="img-fluid rounded shadow">
+            </div>
+
+            <!-- Data Summary -->
+            <div class="mt-5">
+                <h4>Detailed Data</h4>
+                <pre class="bg-dark text-light p-3 rounded">{{ analysis_results | tojson(indent=2) }}</pre>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
